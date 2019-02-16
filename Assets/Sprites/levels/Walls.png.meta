@@ -8,6 +8,9 @@ TextureImporter:
     21300006: Walls_3
     21300008: Walls_4
     21300010: Walls_5
+    21300012: Walls_6
+    21300014: Walls_7
+    21300016: Walls_8
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -116,9 +119,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 256
+        y: 504
         width: 252
-        height: 256
+        height: 252
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -126,7 +129,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 99954fa25f2ec441e874313e22ae3e62
+      spriteID: 2201769f3599048cf987bee7e0ffa297
       vertices: []
       indices: 
       edges: []
@@ -136,9 +139,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 252
-        y: 256
+        y: 504
         width: 252
-        height: 256
+        height: 252
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -146,7 +149,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 48378c7903d344d87a555cf36be487b3
+      spriteID: 519bb50991ebf4b7a9fd09d7d8fa59a5
       vertices: []
       indices: 
       edges: []
@@ -156,9 +159,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 504
-        y: 256
+        y: 504
         width: 252
-        height: 256
+        height: 252
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -166,7 +169,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 565ace970d7de4acbb9d87f6aa946d0d
+      spriteID: c3a58d24a5a99499a8682738717cdd00
       vertices: []
       indices: 
       edges: []
@@ -176,9 +179,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
+        y: 252
         width: 252
-        height: 256
+        height: 252
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -186,7 +189,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: af3f721380bc74a80b7255fc9708b28e
+      spriteID: 47203a57092c44911b159d668bdd2c92
       vertices: []
       indices: 
       edges: []
@@ -196,9 +199,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 252
-        y: 0
+        y: 252
         width: 252
-        height: 256
+        height: 252
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -206,7 +209,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 98915c4f4a4244fcfac12d611110a1a2
+      spriteID: 4260f929b6f6a4874b2c8d9fece6a771
       vertices: []
       indices: 
       edges: []
@@ -216,9 +219,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 504
-        y: 0
+        y: 252
         width: 252
-        height: 256
+        height: 252
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -226,7 +229,67 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 96d04d9ec120742538768b2670d24a97
+      spriteID: 2392a6e65578c4cc7acb08f08bd6481f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Walls_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 252
+        height: 252
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9b960795795a94a4bb8386c1fafa2002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Walls_7
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 0
+        width: 252
+        height: 252
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 99f1ac575fa2440a4bc86071e2d67cba
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Walls_8
+      rect:
+        serializedVersion: 2
+        x: 504
+        y: 0
+        width: 252
+        height: 252
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: adfa2ef0893954cc09ddd3b78c7bc11f
       vertices: []
       indices: 
       edges: []
