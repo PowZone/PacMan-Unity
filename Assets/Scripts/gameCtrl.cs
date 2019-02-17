@@ -9,7 +9,7 @@ public class gameCtrl : MonoBehaviour
 
     public float mapScaleFactor = 2f;
 
-    public GameObject wallsA;
+    public GameObject wallsA, energyObj, godModeObj;
     public Sprite[] wallsSpritesA;
 
     public GameObject player, mapCont;
@@ -22,11 +22,13 @@ public class gameCtrl : MonoBehaviour
 
     // ---
 
+    dirTrigger[] playerSensorsA;
+
     int[] mapData;
 
     int oldDir = -1, nextDir = -1, curDir = 0, curScore = 0;
 
-    bool playerStopped = false;
+    bool playerInitialized = false;
 
     // ---
 
@@ -77,26 +79,42 @@ public class gameCtrl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Application.targetFrameRate = 60;
+
         string maps = "";
 
         mapData = new int[map.width * map.height];
 
         // ---
 
+        Color cYellow = new Color(1f, 1f, 0f);
+
         for (int y = map.height; y>=0; y--)
         {
             for (int x = 0; x < map.width;x++){
                 Color c = map.GetPixel(x, y);
-                // Debug.Log(c);
-                if (c.r==1f && c.g==1f && c.b==0f){
+                Debug.Log(c);
+                if (c.Equals(cYellow))
+                {
                     mapData[y * map.width + x] = 100;
                     maps += "P ";
-                }else
-                if (c.g==0f && c.b == 1f)
+                }
+                else
+                if (c.Equals(Color.blue))
                 {
                     mapData[y * map.width + x] = 1;
                     maps += "# ";
-                }else{
+                }
+                else
+                if (c.Equals(Color.magenta))
+                {
+                    mapData[y * map.width + x] = 10;
+                    maps += "_ ";
+                }
+                else
+                if (c.Equals(Color.red))
+                {
+                    mapData[y * map.width + x] = 11;
                     maps += "_ ";
                 }
             }
@@ -124,11 +142,31 @@ public class gameCtrl : MonoBehaviour
                     GameObject o = Instantiate(wallsA, mapCont.transform);
                     // o.GetComponent<SpriteRenderer>().sprite = wallsSpritesA[t];
                     o.transform.localPosition = pos;
+                    o.name = "Wall_" + y + "_" + x;
 
-                }else 
-                if(v==100){
-
+                }
+                else
+                if (v == 10)
+                {
+                    GameObject o = Instantiate(energyObj, mapCont.transform);
+                    o.transform.localPosition = pos;
+                }
+                else
+                if (v == 11)
+                {
+                    GameObject o = Instantiate(godModeObj, mapCont.transform);
+                    o.transform.localPosition = pos;
+                }
+                else
+                if (v == 100 && !playerInitialized)
+                {
+                    playerInitialized = true;
+                    GameObject o = Instantiate(player, mapCont.transform);
+                    player.SetActive(false);
+                    player = o;
                     player.transform.localPosition = pos;
+
+                    playerSensorsA = player.GetComponent<playerCtrl>().playerSensorsA;
 
                 }
             }
@@ -164,7 +202,6 @@ public class gameCtrl : MonoBehaviour
         player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         PlayerCxPos();
         curDir = nextDir = -1;
-        playerStopped = true;
     }
 
     // Update is called once per frame
@@ -175,17 +212,13 @@ public class gameCtrl : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.UpArrow))     nextDir = 1;
         if (Input.GetKeyDown(KeyCode.DownArrow))   nextDir = 3;
 
-        if (    (playerStopped && nextDir>=0) 
-                || (nextDir == 0 && !HitWall(-1, 0)) 
-                || (nextDir == 1 && !HitWall(0, -1)) 
-                || (nextDir == 2 && !HitWall(1, 0)) 
-                || (nextDir == 3 && !HitWall(0, 1)) 
-           )
+        if (nextDir >= 0 && playerSensorsA[nextDir].canMove)
         {
             curDir = nextDir;
-            playerStopped = false;
+            Debug.Log("Cur / Next Dir = " + curDir);
+            nextDir = -1;
         }
-
+       
         Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
 
         if (oldDir != curDir) PlayerCxPos();
@@ -207,8 +240,10 @@ public class gameCtrl : MonoBehaviour
             rb.velocity = new Vector2(0f, -speedVal);
         }
 
-        debugText.text = nextDir + " (" + playerStopped + ") > " + curDir + " ( " + oldDir + " )\n" +
-            "SX: " + HitWall(-1, 0) +" DX: "+ HitWall(1, 0) +"\nUP: "+ HitWall(0,-1) +" DN: "+ HitWall(0,1);
+        debugText.text = nextDir + " > " + curDir + " ( " + oldDir + " )\n" +
+            "SX: " + playerSensorsA[0].canMove + " DX: " + playerSensorsA[2].canMove + "\nUP: " + playerSensorsA[1].canMove + " DN: " + playerSensorsA[3].canMove;
+
+        //    "SX: " + HitWall(-1, 0) + " DX: " + HitWall(1, 0) + "\nUP: " + HitWall(0, -1) + " DN: " + HitWall(0, 1);
 
         oldDir = curDir;
 

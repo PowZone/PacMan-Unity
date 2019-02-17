@@ -6,6 +6,8 @@ public class playerCtrl : MonoBehaviour
 {
     public gameCtrl mainCtrl;
 
+    public dirTrigger[] playerSensorsA;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +22,7 @@ public class playerCtrl : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Debug.Log("Collision Enter");
+        Debug.Log("Collision Enter");
         mainCtrl.stopPlayer();
     }
 
