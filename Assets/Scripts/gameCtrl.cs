@@ -14,6 +14,8 @@ public class gameCtrl : MonoBehaviour
 
     public GameObject player, mapCont;
 
+    public AudioSource chompAudio, startAudio, fruitAudio;
+
     // ---
 
     public float speedVal = 3f;
@@ -26,9 +28,12 @@ public class gameCtrl : MonoBehaviour
 
     int[] mapData;
 
-    int oldDir = -1, nextDir = -1, curDir = 0, curScore = 0;
+    int oldDir = -1, nextDir = -1, curDir = 0, 
+        curScore = 0, viewScore = 0;
 
     bool playerInitialized = false;
+
+    bool godMode = false;
 
     // ---
 
@@ -165,6 +170,7 @@ public class gameCtrl : MonoBehaviour
                     player.SetActive(false);
                     player = o;
                     player.transform.localPosition = pos;
+                    player.name = "PacMan";
 
                     playerSensorsA = player.GetComponent<playerCtrl>().playerSensorsA;
 
@@ -202,6 +208,25 @@ public class gameCtrl : MonoBehaviour
         player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         PlayerCxPos();
         curDir = nextDir = -1;
+        chompAudio.Stop();
+    }
+
+    public void AddScore(bool superBonus = false){
+
+        curScore += (superBonus)? 1000 : 100;
+
+        if (superBonus){
+            godMode = true;
+            StartCoroutine(TurnOffGodMode());
+            fruitAudio.Play();
+            Debug.Log("God Mode On");
+        }
+    }
+
+    IEnumerator TurnOffGodMode(){
+        yield return new WaitForSeconds(5f);
+        godMode = false;
+        Debug.Log("God Mode Off");
     }
 
     // Update is called once per frame
@@ -217,6 +242,7 @@ public class gameCtrl : MonoBehaviour
             curDir = nextDir;
             Debug.Log("Cur / Next Dir = " + curDir);
             nextDir = -1;
+            chompAudio.Play();
         }
        
         Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
@@ -246,6 +272,15 @@ public class gameCtrl : MonoBehaviour
         //    "SX: " + HitWall(-1, 0) + " DX: " + HitWall(1, 0) + "\nUP: " + HitWall(0, -1) + " DN: " + HitWall(0, 1);
 
         oldDir = curDir;
+
+        // ---
+
+        if (viewScore < curScore)
+        {
+            viewScore += 25;
+            highScoreText.text = "HIGHSCORE\n" + viewScore;
+        }
+        // ---
 
     }
 }

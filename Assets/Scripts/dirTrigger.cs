@@ -47,7 +47,7 @@ public class dirTrigger : MonoBehaviour
     {
         triggerCnt--;
         if (debugMode) Debug.Log("Trigger Exit [" + triggerCnt + "] " + collision.name);
-        canMove = (triggerCnt==0);
+        canMove = true; // (triggerCnt==0);
         sr.color = c1;
     }
     //*/
