@@ -8,7 +8,7 @@ public class dirTrigger : MonoBehaviour
 
     public bool debugMode = false;
 
-    int triggerCnt = 0;
+    public int triggerCnt = 0;
 
     SpriteRenderer sr;
     Color c1, c0;
@@ -30,7 +30,7 @@ public class dirTrigger : MonoBehaviour
     //*
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        triggerCnt++;
+        if (collision.name == "Wall") triggerCnt++;
         if (debugMode) Debug.Log("Trigger Enter ["+ triggerCnt + "] "+collision.name);
         canMove = false;
         sr.color = c0;
@@ -45,9 +45,9 @@ public class dirTrigger : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        triggerCnt--;
+        if (triggerCnt>0) triggerCnt--;
         if (debugMode) Debug.Log("Trigger Exit [" + triggerCnt + "] " + collision.name);
-        canMove = true; // (triggerCnt==0);
+        canMove = (triggerCnt<1);
         sr.color = c1;
     }
     //*/

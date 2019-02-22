@@ -12,7 +12,7 @@ public class gameCtrl : MonoBehaviour
     public GameObject wallsA, energyObj, godModeObj;
     public Sprite[] wallsSpritesA;
 
-    public GameObject player, mapCont;
+    public GameObject player, mapCont, menuCont;
 
     public AudioSource chompAudio, startAudio, fruitAudio;
 
@@ -31,9 +31,30 @@ public class gameCtrl : MonoBehaviour
     int oldDir = -1, nextDir = -1, curDir = 0, 
         curScore = 0, viewScore = 0;
 
+    int difficultyLevel = 0;
+
     bool playerInitialized = false;
 
     bool godMode = false;
+
+    // ---
+
+    public void QuitApp(){
+        Application.Quit();
+    }
+
+    // ---
+
+    public void SetDifficultyLevel(int n){
+        difficultyLevel = n;
+    }
+
+    // ---
+
+    // Setting Global Volume
+    public void SetVolume(float v){
+        AudioListener.volume = v;
+    }
 
     // ---
 
@@ -81,10 +102,23 @@ public class gameCtrl : MonoBehaviour
         return res;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    // ---
+
+    public void StartGame()
     {
-        Application.targetFrameRate = 60;
+        curScore = 0;
+        viewScore = 0;
+
+        // --- Reset
+
+        foreach (Transform child in mapCont.transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+
+        // ---
+
+        playerInitialized = false;
 
         string maps = "";
 
@@ -94,9 +128,10 @@ public class gameCtrl : MonoBehaviour
 
         Color cYellow = new Color(1f, 1f, 0f);
 
-        for (int y = map.height; y>=0; y--)
+        for (int y = map.height; y >= 0; y--)
         {
-            for (int x = 0; x < map.width;x++){
+            for (int x = 0; x < map.width; x++)
+            {
                 Color c = map.GetPixel(x, y);
                 Debug.Log(c);
                 if (c.Equals(cYellow))
@@ -130,7 +165,7 @@ public class gameCtrl : MonoBehaviour
 
         // ---
 
-        int v,t = 0;
+        int v, t = 0;
         Vector3 pos;
 
         for (int y = 0; y < map.height; y++)
@@ -140,14 +175,15 @@ public class gameCtrl : MonoBehaviour
                 v = mapData[y * map.width + x];
                 pos = new Vector3(x * mapScaleFactor, y * mapScaleFactor, 1);
 
-                if (v==1){
+                if (v == 1)
+                {
 
                     t = FindWallSide(x, y);
 
                     GameObject o = Instantiate(wallsA, mapCont.transform);
                     // o.GetComponent<SpriteRenderer>().sprite = wallsSpritesA[t];
                     o.transform.localPosition = pos;
-                    o.name = "Wall_" + y + "_" + x;
+                    o.name = "Wall"; // "Wall_" + y + "_" + x;
 
                 }
                 else
@@ -177,8 +213,21 @@ public class gameCtrl : MonoBehaviour
                 }
             }
         }
-      
+
         // ---
+
+        startAudio.Play();
+        // chompAudio.Play();
+
+        // ---
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        Application.targetFrameRate = 60;
+
+        menuCont.SetActive(true);
 
     }
 
@@ -237,7 +286,7 @@ public class gameCtrl : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.UpArrow))     nextDir = 1;
         if (Input.GetKeyDown(KeyCode.DownArrow))   nextDir = 3;
 
-        if (nextDir >= 0 && playerSensorsA[nextDir].canMove)
+        if (nextDir >= 0 && playerSensorsA[nextDir].triggerCnt<1 && playerSensorsA[nextDir+4].triggerCnt < 1)
         {
             curDir = nextDir;
             Debug.Log("Cur / Next Dir = " + curDir);
@@ -266,10 +315,10 @@ public class gameCtrl : MonoBehaviour
             rb.velocity = new Vector2(0f, -speedVal);
         }
 
+        /*
         debugText.text = nextDir + " > " + curDir + " ( " + oldDir + " )\n" +
-            "SX: " + playerSensorsA[0].canMove + " DX: " + playerSensorsA[2].canMove + "\nUP: " + playerSensorsA[1].canMove + " DN: " + playerSensorsA[3].canMove;
-
-        //    "SX: " + HitWall(-1, 0) + " DX: " + HitWall(1, 0) + "\nUP: " + HitWall(0, -1) + " DN: " + HitWall(0, 1);
+            "SX: " + playerSensorsA[0].triggerCnt + " DX: " + playerSensorsA[2].triggerCnt + "\nUP: " + playerSensorsA[1].triggerCnt + " DN: " + playerSensorsA[3].triggerCnt;
+        //*/
 
         oldDir = curDir;
 
