@@ -583,7 +583,7 @@ MonoBehaviour:
   - {fileID: 21300012, guid: 779ca80901afe48fe984de8e4b47e687, type: 3}
   - {fileID: 21300014, guid: 779ca80901afe48fe984de8e4b47e687, type: 3}
   - {fileID: 21300016, guid: 779ca80901afe48fe984de8e4b47e687, type: 3}
-  player: {fileID: 639976936}
+  playerObj: {fileID: 639976936}
   mapCont: {fileID: 1411170042}
   menuCont: {fileID: 1146407333}
   chompAudio: {fileID: 908192484}
@@ -592,6 +592,7 @@ MonoBehaviour:
   speedVal: 3
   debugText: {fileID: 144998735}
   highScoreText: {fileID: 780207504}
+  highScoreText2: {fileID: 1465532632}
 --- !u!4 &183885748
 Transform:
   m_ObjectHideFlags: 0

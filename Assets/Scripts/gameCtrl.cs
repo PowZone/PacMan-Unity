@@ -12,7 +12,9 @@ public class gameCtrl : MonoBehaviour
     public GameObject wallsA, energyObj, godModeObj;
     public Sprite[] wallsSpritesA;
 
-    public GameObject player, mapCont, menuCont;
+    public GameObject playerObj, mapCont, menuCont;
+
+    GameObject player;
 
     public AudioSource chompAudio, startAudio, fruitAudio;
 
@@ -20,7 +22,7 @@ public class gameCtrl : MonoBehaviour
 
     public float speedVal = 3f;
 
-    public TextMeshPro debugText, highScoreText;
+    public TextMeshPro debugText, highScoreText, highScoreText2;
 
     // ---
 
@@ -54,6 +56,8 @@ public class gameCtrl : MonoBehaviour
     // Setting Global Volume
     public void SetVolume(float v){
         AudioListener.volume = v;
+        PlayerPrefs.SetFloat("volume", v);
+        PlayerPrefs.Save();
     }
 
     // ---
@@ -133,7 +137,7 @@ public class gameCtrl : MonoBehaviour
             for (int x = 0; x < map.width; x++)
             {
                 Color c = map.GetPixel(x, y);
-                Debug.Log(c);
+                // Debug.Log(c);
                 if (c.Equals(cYellow))
                 {
                     mapData[y * map.width + x] = 100;
@@ -202,8 +206,8 @@ public class gameCtrl : MonoBehaviour
                 if (v == 100 && !playerInitialized)
                 {
                     playerInitialized = true;
-                    GameObject o = Instantiate(player, mapCont.transform);
-                    player.SetActive(false);
+                    GameObject o = Instantiate(playerObj, mapCont.transform);
+                    // player.SetActive(false);
                     player = o;
                     player.transform.localPosition = pos;
                     player.name = "PacMan";
@@ -226,6 +230,10 @@ public class gameCtrl : MonoBehaviour
     void Start()
     {
         Application.targetFrameRate = 60;
+
+        SetVolume(PlayerPrefs.GetFloat("volume",0.25f));
+
+        SetHighScore(PlayerPrefs.GetInt("score",0));
 
         menuCont.SetActive(true);
 
@@ -264,6 +272,8 @@ public class gameCtrl : MonoBehaviour
 
         curScore += (superBonus)? 1000 : 100;
 
+        PlayerPrefs.SetInt("score",curScore);
+
         if (superBonus){
             godMode = true;
             StartCoroutine(TurnOffGodMode());
@@ -276,6 +286,11 @@ public class gameCtrl : MonoBehaviour
         yield return new WaitForSeconds(5f);
         godMode = false;
         Debug.Log("God Mode Off");
+    }
+
+    void SetHighScore(int n){
+        highScoreText.text = "HIGHSCORE\n" + n;
+        highScoreText2.text = "HIGHSCORE\n" + n;
     }
 
     // Update is called once per frame
@@ -293,26 +308,29 @@ public class gameCtrl : MonoBehaviour
             nextDir = -1;
             chompAudio.Play();
         }
-       
-        Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
 
-        if (oldDir != curDir) PlayerCxPos();
+        if (player)
+        {
+            Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
 
-        if (curDir==0)
-        {
-            rb.velocity = new Vector2(-speedVal, 0f);
-        }
-        if (curDir==2)
-        {
-            rb.velocity = new Vector2(speedVal, 0f);
-        }
-        if (curDir==1)
-        {
-            rb.velocity = new Vector2(0f, speedVal);
-        }
-        if (curDir==3)
-        {
-            rb.velocity = new Vector2(0f, -speedVal);
+            if (oldDir != curDir) PlayerCxPos();
+
+            if (curDir == 0)
+            {
+                rb.velocity = new Vector2(-speedVal, 0f);
+            }
+            if (curDir == 2)
+            {
+                rb.velocity = new Vector2(speedVal, 0f);
+            }
+            if (curDir == 1)
+            {
+                rb.velocity = new Vector2(0f, speedVal);
+            }
+            if (curDir == 3)
+            {
+                rb.velocity = new Vector2(0f, -speedVal);
+            }
         }
 
         /*
@@ -327,7 +345,7 @@ public class gameCtrl : MonoBehaviour
         if (viewScore < curScore)
         {
             viewScore += 25;
-            highScoreText.text = "HIGHSCORE\n" + viewScore;
+            SetHighScore(viewScore);
         }
         // ---
 
